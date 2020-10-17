@@ -49,7 +49,6 @@ public class UserServiceImplementation implements UserService {
     public User register(User newUser) {
         if (newUser.getEmail().isEmpty() || newUser.getPassword().isEmpty() || newUser.getUserName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
         } else {
             users.add(newUser);
             return newUser;
