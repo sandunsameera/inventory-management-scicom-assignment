@@ -5,18 +5,19 @@ import com.sandun.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/products")
+@RequestMapping(value = "/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Product> allProducts() {
         return productService.allProducts();
     }
@@ -27,7 +28,7 @@ public class ProductController {
         return product;
     }
 
-    @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product addProduct(@RequestBody Product newProduct) {
         Product product = productService.addProduct(newProduct);
         return product;
@@ -45,8 +46,20 @@ public class ProductController {
         return product;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Product> searchProduct( @RequestParam(value = "brand") String brand,@RequestParam(value = "type") String type) {
-     return productService.searchProduct(brand,type);
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"desc"})
+    public List<Product> searchedByDescription(@RequestParam(value = "desc") String description) {
+        return productService.searchProductByDescription(description);
+    }
+
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"types"})
+    public List<Product> search(@RequestParam(value = "types") String[] types) {
+        return productService.searchByArray(types);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"brands"})
+    public List<Product> searchByBrand(@RequestParam(value = "brands") String[] brands) {
+        return productService.searchByBrandArray(brands);
     }
 }

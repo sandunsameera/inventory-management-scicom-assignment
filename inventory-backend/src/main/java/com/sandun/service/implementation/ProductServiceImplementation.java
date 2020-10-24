@@ -25,13 +25,16 @@ public class ProductServiceImplementation implements ProductService {
         Product product5 = new Product(5, "LG", "Fridge", 1600.00, new Date(), "Double door fridge");
         Product product6 = new Product(6, "TCL", "TV", 800.00, new Date(), "48 Inch LED Tv");
         Product product7 = new Product(7, "TCL", "TV", 1200.00, new Date(), "96 Inch LED Tv");
+        Product product8 = new Product(8, "Samsung", "Fridge", 1200.00, new Date(), "96 Inch LED Tv");
 
         products.add(product1);
         products.add(product2);
         products.add(product3);
+        products.add(product4);
         products.add(product5);
         products.add(product6);
         products.add(product7);
+        products.add(product8);
 
 
     }
@@ -46,11 +49,9 @@ public class ProductServiceImplementation implements ProductService {
         for (Product product : products) {
             if (product.getId() == Id) {
                 return product;
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -79,7 +80,6 @@ public class ProductServiceImplementation implements ProductService {
         for (Product product : products) {
             if (product.getId() == id) {
                 product.setId(newProduct.getId());
-                product.setBrand(newProduct.getBrand());
                 product.setDescription(newProduct.getDescription());
                 product.setExpireDate(newProduct.getExpireDate());
                 product.setType(newProduct.getType());
@@ -91,12 +91,42 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
-    public List<Product> searchProduct(String brand, String type) {
+    public List<Product> searchProductByDescription(String description) {
         List<Product> searchedProducts = new ArrayList<>();
 
         for (Product product : products) {
-            if (product.getBrand().equalsIgnoreCase(brand) && product.getType().equalsIgnoreCase(type)) {
+            if (product.getDescription().toLowerCase().contains(description.toLowerCase())) {
                 searchedProducts.add(product);
+            }
+        }
+        return searchedProducts;
+    }
+
+    @Override
+    public List<Product> searchByArray(String[] types) {
+        List<Product> searchedProducts = new ArrayList<>();
+        for (Product product : products) {
+            for (String type : types) {
+                if (product.getType().equalsIgnoreCase(type)) {
+                    searchedProducts.add(product);
+                }
+            }
+        }
+        return searchedProducts;
+    }
+
+
+
+
+    @Override
+    public List<Product> searchByBrandArray(String[] brands) {
+        List<Product> searchedProducts = new ArrayList<>();
+
+        for (Product product : products) {
+            for (String brand : brands) {
+                if (product.getBrand().equalsIgnoreCase(brand)) {
+                    searchedProducts.add(product);
+                }
             }
         }
         return searchedProducts;
