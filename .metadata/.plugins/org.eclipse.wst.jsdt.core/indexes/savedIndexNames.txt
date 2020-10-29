@@ -1,0 +1,2 @@
+INDEX VERSION 1.4+D:\projects\intern\inventory-management-scicom-assignment\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+112693986.index

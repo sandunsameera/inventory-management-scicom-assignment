@@ -1,0 +1,47 @@
+table{
+  justify-content: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.example-button-row .mat-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+
+.add-product{
+  margin-bottom: 20px;
+  padding-top: 20px;
+  min-width: 100px;
+  
+  padding-right: 20px;
+}
+
+.row{
+  display: flex;
+}
+
+.search-com{
+  padding-top: 20px;
+  width: 80%;
+}
+
+mat-form-field {
+  // background-color: rebeccapurple;
+  width: 80%;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+.search-dropdown{
+  padding-top: 20px;
+  width: 60%;
+}
+
+.logout-btn{
+  height: 20px;
+  padding-top: 35px;
+}

@@ -1,0 +1,7 @@
+127.0.0.1 - - [23/Oct/2020:11:06:19 +0530] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [23/Oct/2020:11:06:20 +0530] "GET /inventory-backend/ HTTP/1.1" 200 52
+0:0:0:0:0:0:0:1 - - [23/Oct/2020:11:06:28 +0530] "GET /inventory-backend/products HTTP/1.1" 404 781
+0:0:0:0:0:0:0:1 - - [23/Oct/2020:11:06:40 +0530] "GET /api/products HTTP/1.1" 404 767
+0:0:0:0:0:0:0:1 - - [23/Oct/2020:11:06:50 +0530] "GET /api/products HTTP/1.1" 404 767
+0:0:0:0:0:0:0:1 - - [23/Oct/2020:11:07:35 +0530] "GET /inventory-backend/ HTTP/1.1" 200 52
+0:0:0:0:0:0:0:1 - - [23/Oct/2020:11:07:42 +0530] "GET /inventory-backend/api/products HTTP/1.1" 500 18568

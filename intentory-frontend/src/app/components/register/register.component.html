@@ -1,0 +1,66 @@
+<div class="register-card">
+  <form [formGroup]="myForm">
+    <mat-card>
+      <mat-card-title>Register</mat-card-title>
+      <mat-card-content>
+
+        <!-- Username input field -->
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input [class.is-invalid]="myForm.get('username').invalid && myForm.get('username').touched" matInput
+              placeholder="Enter username here" formControlName="username" />
+          </mat-form-field>
+          <div *ngIf="myForm.get('username').invalid && myForm.get('username').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('username').errors.required">*Username is required !</small>
+          </div>
+        </section>
+
+
+
+        <!-- Email input field -->
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input [class.is-invalid]="myForm.get('email').invalid && myForm.get('email').touched" matInput
+              placeholder="Enter Email here" formControlName="email" />
+          </mat-form-field>
+          <div *ngIf="myForm.get('email').invalid && myForm.get('email').touched">
+
+
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('email').errors.required">*Email is required !</small>
+            <small *ngIf="myForm.get('email').errors.email">*Email is badly formatted !</small>
+          </div>
+        </section>
+
+        <!-- Password input field -->
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input [class.is-invalid]="myForm.get('password').invalid && myForm.get('password').touched" matInput
+              placeholder="Enter password here" formControlName="password" type="password" />
+          </mat-form-field>
+          <div *ngIf="myForm.get('password').invalid && myForm.get('password').touched">
+
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('password').errors.required">*Email is required !</small>
+            <small *ngIf="myForm.get('password').errors.password">*At least 6 characters !</small>
+          </div>
+        </section>
+
+        <section class="button-row">
+         <button mat-raised-button color="primary" [disabled]="myForm.invalid"
+            (click)="register(myForm.value)">Register</button>
+        </section>
+
+        <section>
+          Already having an accout?
+          <a class="login-redirect" [routerLink]="[ '/']" mat-raised-button color="primary" >Log In..</a>
+        </section>
+      </mat-card-content>
+    </mat-card>
+  </form>
+
+</div>

@@ -1,0 +1,50 @@
+<div class="login-card">
+  <form [formGroup]="myForm">
+    <mat-card>
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-content>
+        <!-- Email input field -->
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Email :</mat-label>
+            <input [class.is-invalid]="myForm.get('email').invalid && myForm.get('email').touched" matInput
+              placeholder="Enter Email here" formControlName="email" />
+          </mat-form-field>
+          <div *ngIf="myForm.get('email').invalid && myForm.get('email').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('email').errors.required">*Email is required !</small>
+            <small *ngIf="myForm.get('email').errors.email">*Email is badly formatted !</small>
+          </div>
+        </section>
+
+        <!-- password input field -->
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input [class.is-invalid]="
+            myForm.get('password').invalid &&
+            myForm.get('password').touched
+          " matInput placeholder="Enter password here" type="password" formControlName="password">
+          </mat-form-field>
+
+
+          <div *ngIf="
+            myForm.get('password').invalid &&
+            myForm.get('password').touched
+          ">
+            <!-- show error message for validation error -->
+            <small  *ngIf="myForm.get('password').errors.required">*Enter a password !</small>
+            <small  *ngIf="myForm.get('password').errors.minlength">*Password must be atleast 6
+              charactors !</small>
+          </div>
+        </section>
+
+        <section class="button-row">
+          <button mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="login(myForm.value)">Log In</button>
+          <button mat-raised-button color="accent" [routerLink]="['/register']" routerLinkActive="router-link-active" >Register</button>
+        </section>
+      </mat-card-content>
+    </mat-card>
+  </form>
+
+</div>

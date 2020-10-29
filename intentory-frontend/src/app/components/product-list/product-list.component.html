@@ -1,0 +1,96 @@
+<!-- Search bar -->
+<div class="row">
+  <div class="search-com">
+    <form [formGroup]="myForm">
+      <mat-form-field appearance="fill" >
+        <mat-label>Search Query</mat-label>
+        <input matInput placeholder="Search query" formControlName="query">
+        <mat-icon matSuffix (click)="search(myForm.value)">search</mat-icon>
+      </mat-form-field>
+    </form>
+  </div>
+  
+  <div class="search-dropdown">
+    <mat-form-field appearance="outline">
+      <mat-label>Brands</mat-label>
+      <mat-select [formControl]="brands" multiple [(value)]="selectedbrand" (ngModelChange)="onNgBrandModelChange($event)">
+        <mat-option *ngFor="let brand of brandList" [value]="brand">{{brand}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="search-dropdown">
+    <mat-form-field appearance="outline">
+      <mat-label>Types</mat-label>
+      <mat-select [formControl]="types" multiple  [(value)]="selectedtype" (ngModelChange)="onNgTypeModelChange($event)">
+        <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="logout-btn">
+    <button mat-raised-button (click)="logout()">
+      <mat-icon>logout</mat-icon>  Logout
+    </button>
+  </div>
+</div>
+
+<div class="add-product">
+  <button mat-raised-button color="primary" (click)="postProduct()" routerLinkActive="router-link-active">Add a product</button>
+</div>
+
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="products" matSort>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="Id">
+      <th mat-header-cell *matHeaderCellDef> Id. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Brand">
+      <th mat-header-cell *matHeaderCellDef> Brand </th>
+      <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Price">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+    </ng-container>
+
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Expire Date">
+      <th mat-header-cell *matHeaderCellDef> Expire Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.expireDate | date: 'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+      <th mat-header-cell *matHeaderCellDef> Action</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="example-button-row">
+          <button mat-raised-button color="primary" (click)="editProduct(element)">Edit Product</button>
+          <button mat-raised-button color="warn" (click)="removeProduct(element)">Delete Product</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5,10,20]" ></mat-paginator>
+</div>

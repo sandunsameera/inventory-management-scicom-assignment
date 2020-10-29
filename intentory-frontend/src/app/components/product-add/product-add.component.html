@@ -1,0 +1,81 @@
+<div class="edit-card">
+  <form [formGroup]="myForm">
+    <mat-card>
+      <mat-card-title>Add Product</mat-card-title>
+      <mat-card-content>
+        <section>
+          <mat-form-field appearance="outline">
+            <mat-label>Select Brand</mat-label>
+            <mat-select [(value)]="brand" formControlName="brand">
+              <mat-option *ngFor="let brand of brands" [value]="brand.value">
+                {{brand.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="myForm.get('brand').invalid && myForm.get('brand').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('brand').errors.required">*Product brand is required !</small>
+          </div>
+        </section>
+
+        <section>
+          <mat-form-field appearance="outline">
+            <mat-label>Select Product Type</mat-label>
+            <mat-select [(value)]="type"  formControlName="type">
+              <mat-option *ngFor="let type of types" [value]="type.value">
+                {{type.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="myForm.get('type').invalid && myForm.get('type').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('type').errors.required">*Product Type is required !</small>
+          </div>
+        </section>
+
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Price :</mat-label>
+            <input  [class.is-invalid]="myForm.get('price').invalid && myForm.get('price').touched" matInput formControlName="price" type="number" min="0" />
+          </mat-form-field>
+          <div *ngIf="myForm.get('price').invalid && myForm.get('price').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('price').errors.required">*Price is required !</small>
+          </div>
+        </section>
+        
+        <section>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Expire date :</mat-label>
+            <input  [class.is-invalid]="myForm.get('expiredate').invalid && myForm.get('expiredate').touched" matInput [matDatepicker]="datePicker" [min]="minDate" formControlName="expiredate">
+            <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+          </mat-form-field>
+          <div *ngIf="myForm.get('expiredate').invalid && myForm.get('expiredate').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('expiredate').errors.required">*Expire Date is required !</small>
+          </div>
+        </section>
+
+        <section class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Description :</mat-label>
+            <input  [class.is-invalid]="myForm.get('description').invalid && myForm.get('description').touched" matInput formControlName="description" type="text" />
+          </mat-form-field>
+          <div *ngIf="myForm.get('description').invalid && myForm.get('description').touched">
+            <!-- show error message for validation error -->
+            <small *ngIf="myForm.get('description').errors.required">*description is required !</small>
+          </div>
+        </section>
+
+        <section class="example-button-row">
+          <button mat-raised-button color="primary" [disabled]="myForm.invalid" mat-dialog-close (click)="addProduct(myForm.value)">Add Product</button>
+          <button mat-raised-button color="accent" (click)="clearForm()">Reset</button>
+        </section>
+
+      </mat-card-content>
+    </mat-card>
+
+  </form>
+</div>

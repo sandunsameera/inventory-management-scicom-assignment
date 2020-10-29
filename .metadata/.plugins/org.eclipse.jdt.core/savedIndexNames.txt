@@ -1,0 +1,21 @@
+INDEX VERSION 1.131+D:\projects\intern\inventory-management-scicom-assignment\.metadata\.plugins\org.eclipse.jdt.core
+1745712584.index
+2217533959.index
+61107523.index
+4040352943.index
+112693986.index
+474021517.index
+1145574432.index
+3195898186.index
+713130914.index
+2215081971.index
+1725348691.index
+274548915.index
+1434425704.index
+2780876721.index
+789344348.index
+134630467.index
+891742383.index
+3025533793.index
+1148934058.index
+3444959187.index
