@@ -16,11 +16,7 @@ public interface ProductService {
 
     Product updateProduct(int id,Product product);
 
-//    List<Product> searchProductByBrand(String brand);
-
     List<Product> searchProductByDescription(String description);
-
-//    List<Product> searchProductByType(String type);
 
     List<Product> searchByArray(String[] types);
 

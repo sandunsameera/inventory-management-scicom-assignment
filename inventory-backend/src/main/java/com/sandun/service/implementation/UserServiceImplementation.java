@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -18,31 +19,27 @@ public class UserServiceImplementation implements UserService {
 
         User user1 = new User(1, "sandun", "sandunsameera25@gmail.com", "sandun");
         User user2 = new User(2, "sandun", "sanduni@gmail.com", "sandunsameera");
-
         users.add(user1);
         users.add(user2);
     }
 
     @Override
     public List<User> getAllUsers() {
-        if (users.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        } else {
-            return users;
-        }
+        return users;
     }
 
 
     @Override
     public User login(String email, String password) {
-        for (User user : users) {
-            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
-                return user;
-            } else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-            }
+        Optional<User> loginUser = users.stream()
+                .filter(user -> user.getEmail().equalsIgnoreCase(email) && user.getPassword().equalsIgnoreCase(password))
+                .findAny();
+
+        if (loginUser.isPresent()) {
+            return loginUser.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-        return null;
     }
 
     @Override
@@ -50,8 +47,12 @@ public class UserServiceImplementation implements UserService {
         if (newUser.getEmail().isEmpty() || newUser.getPassword().isEmpty() || newUser.getUserName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         } else {
-            users.add(newUser);
-            return newUser;
+            if (newUser.getPassword().length() <= 5) {
+                throw new ResponseStatusException(HttpStatus.LENGTH_REQUIRED);
+            } else {
+                users.add(newUser);
+                return newUser;
+            }
         }
     }
 }

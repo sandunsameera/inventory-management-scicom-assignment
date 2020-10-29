@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImplementation implements ProductService {
@@ -35,9 +34,8 @@ public class ProductServiceImplementation implements ProductService {
         products.add(product6);
         products.add(product7);
         products.add(product8);
-
-
     }
+
 
     @Override
     public List<Product> allProducts() {
@@ -46,59 +44,65 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public Product findById(int Id) {
-        for (Product product : products) {
-            if (product.getId() == Id) {
-                return product;
-            }
+        Optional<Product> product = products.stream().filter(product1 -> product1.getId() == Id).findAny();
+        if (product.isPresent()) {
+            return product.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @Override
     public Product addProduct(Product product) {
+
+        if (products.stream().anyMatch(product1 -> product1.getId() == product.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         if (product.getBrand().isEmpty() || product.getPrice() == 0 || product.getType().isEmpty() || product.getExpireDate().before(new Date()) || product.getDescription().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         } else {
             products.add(product);
             return product;
         }
+
     }
 
     @Override
     public Product removeProduct(int productId) {
-        for (Product product : products) {
-            if (product.getId() == productId) {
-                products.remove(product);
-                return product;
-            }
+
+        Optional<Product> removableProduct = products.stream().filter(product -> product.getId() == productId).findAny();
+
+        if (removableProduct.isPresent()) {
+            products.remove(removableProduct.get());
+            return removableProduct.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
 
     @Override
     public Product updateProduct(int id, Product newProduct) {
-        for (Product product : products) {
-            if (product.getId() == id) {
-                product.setId(newProduct.getId());
-                product.setDescription(newProduct.getDescription());
-                product.setExpireDate(newProduct.getExpireDate());
-                product.setType(newProduct.getType());
-                product.setPrice(newProduct.getPrice());
-                return newProduct;
-            }
+
+        Optional<Product> updatableProduct = products.stream().filter(product -> product.getId() == id).findAny();
+        if (updatableProduct.isPresent()) {
+            updatableProduct.get().setId(newProduct.getId());
+            updatableProduct.get().setPrice(newProduct.getPrice());
+            updatableProduct.get().setType(newProduct.getType());
+            updatableProduct.get().setDescription(newProduct.getDescription());
+            updatableProduct.get().setBrand(newProduct.getBrand());
+            return newProduct;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
 
     @Override
     public List<Product> searchProductByDescription(String description) {
-        List<Product> searchedProducts = new ArrayList<>();
-
-        for (Product product : products) {
-            if (product.getDescription().toLowerCase().contains(description.toLowerCase())) {
-                searchedProducts.add(product);
-            }
-        }
+        List<Product> searchedProducts = products.stream().filter(product -> product.getDescription().toLowerCase().contains(description.toLowerCase()))
+                .collect(Collectors.toList());
+        searchedProducts.sort(Comparator.comparing(Product::getId));
         return searchedProducts;
     }
 
@@ -107,7 +111,7 @@ public class ProductServiceImplementation implements ProductService {
         List<Product> searchedProducts = new ArrayList<>();
         for (Product product : products) {
             for (String type : types) {
-                if (product.getType().equalsIgnoreCase(type)) {
+                if (products.stream().anyMatch(product1 -> product.getType().equalsIgnoreCase(type))) {
                     searchedProducts.add(product);
                 }
             }
@@ -116,15 +120,12 @@ public class ProductServiceImplementation implements ProductService {
     }
 
 
-
-
     @Override
     public List<Product> searchByBrandArray(String[] brands) {
         List<Product> searchedProducts = new ArrayList<>();
-
         for (Product product : products) {
             for (String brand : brands) {
-                if (product.getBrand().equalsIgnoreCase(brand)) {
+                if (products.stream().anyMatch(product1 -> product.getBrand().equalsIgnoreCase(brand))) {
                     searchedProducts.add(product);
                 }
             }
